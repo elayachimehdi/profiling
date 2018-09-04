@@ -1,3 +1,4 @@
+'''Avant de lancer le script il faut metter sa console sur le dossier profiling (master branch)'''
 #Importation des librairies
 import pyodbc as db
 import pandas as pd
@@ -17,7 +18,12 @@ questions = pd.read_sql(query_questionnaire,con)
 
 
 # Nettoyage du Dataframe KYC
-Nulls = df.isnull().sum()
+from fonctions import index_to_question
+Nulls = pd.DataFrame(df.isnull().sum())
+seuil = len(df)/2
+to_delete = [i for i in range(len(Nulls)) if Nulls[0][i]>seuil]
+df = df.drop(index_to_question(to_delete), axis = 1)
+
 
 #Remplacment
 from changements import OLD, NEW
@@ -35,8 +41,6 @@ df = df.replace(OLD,NEW)
 
 
 
-
-#Insider functions ##############################################################################################
 
 
 
