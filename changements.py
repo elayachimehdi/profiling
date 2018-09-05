@@ -13,7 +13,7 @@ unzero = [1,1,0]
 Q1_old = ['Exige un accompagnement en la matière','Modérée','Moyenne','Excellente']
 Q1_new = [0,1,2,3]
 
-Q18_old = ['Jamais','Rarement','Régulièrement', ]
+Q18_old = ['Jamais','Rarement','Régulièrement']
 Q18_new = [0,1,2]
 
 Q19_old = ['Jamais ','Jusqu’à 1 an','1-5 ans','Plus de 5 ans']
