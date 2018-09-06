@@ -6,3 +6,5 @@ Le fichier data_preparation est le fichier executant la preparation des données.
 Le fichier fonctions regroupe certaines fonctions afin de pouvoir factoriser notre code
 
 Le fichier changements contient des listes des changements à réliser dans la base de données.
+
+##########################################################################################################################################################
