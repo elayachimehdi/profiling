@@ -154,8 +154,18 @@ def maxer(df, label = None):
 
 
 ##########################################################################################################################################################    
-
-
+#
+#def labeller(df):
+#    #Takes a matrix of zeros and ones and return the label of the first one in each row
+#    length = len(df.iloc[:,[0]])
+#    for index in range(length) :
+#        row = df.iloc[index]
+#        column_index = row[row == 1].index[]
+#        
+#    
+    
+    
+    
 
 ##########################################################################################################################################################    
 
