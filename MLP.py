@@ -1,22 +1,27 @@
-
 #Importation des libraires
 import pandas as pd 
 import numpy as np 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 
 #Importation du dataset 
-from data_preparation import df as X
-from data_preparation import output as y
-
+#from data_preparation import df as X
+#from data_preparation import output as y
+from Kmean_1 import main
+from fonctions import categoriser
+df = main()
+X = df.iloc[:,0:7]
+y = df.iloc[:,8]
+y = categoriser(s = y, no_drop = True)
 
 # Séparation du training set et du test set
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
 
-#Importing keras modules
+
+
+# Importing keras modules
 from keras.models import Sequential 
 from keras.layers import Dense, Dropout
-
 
 
 #Initiation 
@@ -25,6 +30,7 @@ classifier = Sequential()
 #Ajouter la  d'entrée
 classifier.add(Dense(units=7, activation="relu", 
                      kernel_initializer="uniform", input_dim=7))
+
 classifier.add(Dropout(rate=0.1))
 
 #Ajouter une couche cachée
@@ -51,20 +57,23 @@ classifier.compile(optimizer="adam",loss="categorical_crossentropy", metrics=["a
  
  
 #Training Neural Network
-classifier.fit(X_train,y_train, batch_size=10, epochs=100)
+classifier.fit(X_train,y_train, batch_size=10, epochs=200)
 
 #Prediction 
 from fonctions import maxer
 y_pred = classifier.predict(X_test)
 y_pred = maxer(pd.DataFrame(y_pred))
 
-#Confusion Matrix 
+##Confusion Matrix 
 from sklearn.metrics import confusion_matrix 
-cm = confusion_matrix(y_test.iloc[:,0], y_pred.iloc[:,0])
+cm = confusion_matrix(y_test.iloc[:,0]*0+y_test.iloc[:,1]+y_test.iloc[:,2]*2+y_test.iloc[:,3]*3, y_pred.iloc[:,0]*0+y_pred.iloc[:,1]+y_pred.iloc[:,2]*2+y_pred.iloc[:,3]*3)
+
+from sklearn.metrics import accuracy_score
+accuracy_score(y_test, y_pred, normalize=True)
 
 
 
-# Grid Search 
+#%% Grid Search 
 #Libraries
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV

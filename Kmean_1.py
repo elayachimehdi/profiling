@@ -6,12 +6,13 @@
 
 # K means clustering is applied to normalized ipl player data &
 
-
+import pyodbc as db
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import style
 import pandas as pd 
 from mpl_toolkits.mplot3d import Axes3D
+from fonctions import classifier
 
 style.use('ggplot')
 score_columns = ['connaissance_marche',
@@ -110,8 +111,14 @@ def main():
             
         for features in km.classes[classification]:
             ax.scatter(features[0], features[1], features[2], color = color,s = 30)
-#    plt.show()
+    plt.show()
     Dataframe.columns = score_columns + ['IdPersonne','classe']
+    con = db.connect('DRIVER={ODBC Driver 13 for SQL Server};SERVER=ZBOOK;Trusted_Connection=yes;DATABASE=Peaqock')
+    quest = pd.read_sql('SELECT * FROM Peaqock.dbo.KYC',con)
+    Dataframe['Score_total'] = Dataframe[score_columns].sum(axis = 1)    
+    Dataframe['Score_classe'] = classifier(Dataframe['Score_total'],limits = [-1.5,0.5,4])
+    Dataframe = pd.merge(Dataframe, quest, left_on = 'IdPersonne', right_on = 'IdPersonne' )
+    
     return Dataframe
 
 
