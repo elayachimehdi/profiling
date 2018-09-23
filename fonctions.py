@@ -1,6 +1,21 @@
 # Functions ##########################################
 import pandas as pd
 import numpy as np
+import pyodbc as db
+
+##########################################################################################################################################################    
+
+###################################################           Fonctions MLP et K-Means           #########################################################    
+
+##########################################################################################################################################################    
+
+
+##########################################################################################################################################################
+
+#con = db.connect('DRIVER={ODBC Driver 13 for SQL Server};SERVER=ZBOOK;Trusted_Connection=yes;DATABASE=Peaqock')
+#df = pd.read_sql('SELECT * FROM Peaqock.dbo.TypeValeurs',con)
+
+
 
 ##########################################################################################################################################################
 
@@ -199,33 +214,166 @@ def limit_finder(serie,percentage):
 
 
 
+##########################################################################################################################################################    
 
+###################################################        Fonctions DataBase Transactions       #########################################################    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+##########################################################################################################################################################    
 
 
 
 ##########################################################################################################################################################    
 
-##########################################################################################################################################################    
+def year_index(S, annee = 2018):
+    #This function takes a Serie of dates (type : string, format : 'yyyy-mm-dd hh:mm:ss.fff') and returns a list of booleans 
+    #The true rows are the ones of the year 'annee'
+    L = []
+    for row in S.index :
+        if S[row][0:4] == str(annee) :
+            L.append(True)
+        else : 
+            L.append(False)
+    return L
 
 ##########################################################################################################################################################    
+
+def isin_index(S,liste) :
+    liste = list(liste)
+    #This function takes a Serie and a list and return a list of booleans
+    #The true rows are the ones contained in the list
+    L = []
+    for row in S.index :
+        if S[row] in liste :
+            L.append(True)
+        else : 
+            L.append(False)
+    return L
+            
+########################################################################################################################################################## 
+
+def quantifier(df, Id_name, values_name, all_Id_Names):
+    #Takes name of the Id column, name of the values columns, and list of all Ids names
+    #return a single rowed dataframe with summed values for each Id_name
+    types = list(set(df[Id_name]))
+    data = pd.DataFrame([np.zeros(len(all_Id_Names))],columns = all_Id_Names)
+    for Type in types: 
+        total_value = 0
+        for operation_ix in df.index :
+            if df[Id_name][operation_ix] == Type :
+                total_value += df[values_name][operation_ix]
+        data[Type][0] = total_value
+    return data
+
+########################################################################################################################################################## 
+    
+from parametres import all_label_TypeValeurs
+
+def value_to_index(liste, labels = all_label_TypeValeurs):
+    l = []
+    for value in liste :
+        if value != 0 :
+            l.append(labels[liste.index(value)])
+    return l
+
+########################################################################################################################################################## 
+
+def percenter(liste , total = None):
+    if total == None :
+        return percenter(liste, total = sum(liste))
+    if total == 0:
+        return list(np.zeros(len(liste)))
+    L=[]
+    for element in liste : 
+        if element == 0 :
+            L.append(0)
+        else : 
+            L.append(100*element/total)
+    return L
+
+
+########################################################################################################################################################## 
+
+
+def execom(command, con = db.connect('DRIVER={ODBC Driver 13 for SQL Server};SERVER=ZBOOK;Trusted_Connection=yes;DATABASE=Peaqock')):
+    cur = con.cursor()
+    cur.execute(command)
+    cur.close()
+    
+    
+
+    
+    
+    
+def insert(table_name, df, column_names):
+    
+    command = 'INSERT INTO '+table_name+' ('
+    for column_name in column_names : 
+        command += column_name + ','
+    command = command[:-1]
+    command += ') VALUES '
+    for row in df.index : 
+        command += str(tuple(df.loc[row]))+','
+    command = command[:-1]
+    return command
+    
+#
+#def table_commander(table_name, column_names, row_example):
+#    sql_types = ['CHARACTER',]
+#    python_type = [ ]
+#    column_types = []
+#    if len(column_names)!=len(row_example):
+#        print("lenght of names : ", len(column_names))
+#        print("length of example : ", len(row_example))
+#    length = len(column_example)
+#    command = 'CREATE TABLE IF NOT EXISTS' + table_name + ' ('
+#    for name in column_names : 
+#        command += 
+#    
+#    
+#    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
