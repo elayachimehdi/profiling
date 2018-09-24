@@ -26,6 +26,11 @@ score_columns = ['connaissance_marche',
  'mode_gestion']
 
 
+Dataframe = pd.DataFrame()
+df = pd.read_csv(r"./Data_before_clustering.csv")
+df.index = df['IdPersonne']
+df = df.drop('IdPersonne',axis = 1)
+
 class K_Means:
     def __init__(self, k =3, tolerance = 0.0001, max_iterations = 500):
         self.k = k
@@ -86,12 +91,10 @@ class K_Means:
 
 
 def main():
+    
+    global df
     Dataframe = pd.DataFrame()
-    df = pd.read_csv(r"./Data_before_clustering.csv")
-    df.index = df['IdPersonne']
-    df = df.drop('IdPersonne',axis = 1)
-    
-    
+
     km = K_Means(4)
     km.fit(df)
 

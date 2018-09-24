@@ -229,7 +229,7 @@ def year_index(S, annee = 2018):
     #The true rows are the ones of the year 'annee'
     L = []
     for row in S.index :
-        if S[row][0:4] == str(annee) :
+        if list(S.loc[row])[0].year == annee :
             L.append(True)
         else : 
             L.append(False)
@@ -260,7 +260,7 @@ def quantifier(df, Id_name, values_name, all_Id_Names):
         total_value = 0
         for operation_ix in df.index :
             if df[Id_name][operation_ix] == Type :
-                total_value += df[values_name][operation_ix]
+                        total_value += df[values_name][operation_ix]
         data[Type][0] = total_value
     return data
 
@@ -301,9 +301,6 @@ def execom(command, con = db.connect('DRIVER={ODBC Driver 13 for SQL Server};SER
     
     
 
-    
-    
-    
 def insert(table_name, df, column_names):
     
     command = 'INSERT INTO '+table_name+' ('
