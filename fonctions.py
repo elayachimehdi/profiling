@@ -300,19 +300,17 @@ def execom(command, con = db.connect('DRIVER={ODBC Driver 13 for SQL Server};SER
     cur.close()
     
     
-
 def insert(table_name, df, column_names):
     
-    command = 'INSERT INTO '+table_name+' ('
+    command = 'INSERT INTO '+"`"+table_name+"`("
     for column_name in column_names : 
-        command += column_name + ','
+        command += "`"+column_name + "`,"
     command = command[:-1]
     command += ') VALUES '
     for row in df.index : 
         command += str(tuple(df.loc[row]))+','
     command = command[:-1]
     return command
-    
 #
 #def table_commander(table_name, column_names, row_example):
 #    sql_types = ['CHARACTER',]
@@ -330,11 +328,34 @@ def insert(table_name, df, column_names):
 #    
     
 
+def separator(df, Ids):
+    length = len(df.index)
+    data = df
+    if len(Ids)>1 :
+        for identifier in Ids :
+            data[identifier] = np.ones(length)
+            ix = Ids.index(identifier)
+            for index in df.index:
+                data.loc[index][identifier] = index[ix]
+    if len(Ids) == 1 :
+        identifier = Ids[0]
+        data[identifier] = np.ones(length)
+        for index in df.index:
+            data.loc[index,identifier] = index
+    return data
+        
+        
+def rm(liste,element):
+    return [x for x in liste if x != element]
 
 
-
-
-
+def finder_colnames(table_name, con):
+    l=[]
+    cur = con.cursor()
+    table = cur.execute('Select * from '+table_name)
+    for col in cur.description :
+        l.append(col[0])
+    return l 
 
 
 

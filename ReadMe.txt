@@ -7,10 +7,10 @@
  - data_preprocessing : fichier pour la transformation du questionnaire pour le clustering
 
 ############################ Preprocessing : 
-dbase_montant_brut : Table des montants de chaque type de transactions par client et années
-dbase_pourcentage_client :Table des pourceentages de chaque type de transactions par client et année
+dbase_montant_brut : Table des montants de chaque type de transactions par client et années (Montant_Total)
+dbase_pourcentage_client : Table des pourcentages de chaque type de transactions par client et année
 dbase_risque_client : Table des profils de risque issus du clustering par client
-dbase_montant_risque_volume :Table des volumes echangés par profil de risque 
-dbase_montant_risque_qte : Table des quantités échangées par profil de risque
+dbase_montant_risque_volume :Table des volumes echangés par profil de risque (VolumeTotal)
+dbase_montant_risque_qte : Table des quantités échangées par profil de risque (QteTotale)
 dbase_pourcentage_risque_volume : Table des pourcentages (en terme de volume échangé) par profil de risque
 dbase_pourcentage_risque_qte : Table des pourcentages (en terme de quantité échangée) par profil de risque
